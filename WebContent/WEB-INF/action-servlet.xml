@@ -16,28 +16,37 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" id="urlMapping">
 		<property name="mappings">
 			<props>
-				<prop key="/test/*.do">userController</prop>
+				<prop key="/member/*.do">memberController</prop>
 			</props>
 		</property>
 	</bean>
 	
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="viewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
-		<property name="prefix" value="/test/"></property>
+		<property name="prefix" value="/WEB-INF/views/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 	
-	<bean class="web.controller.UserController" id="userController">
+	<!-- <bean class="web.controller.UserController" id="userController">
 		<property name="methodNameResolver">
 			<ref local="userMethodNameResolver"/>
 		</property>
+	</bean> -->
+	
+	<bean class="web.controller.MemberController" id="memberController">
+		<property name="methodNameResolver">
+			<ref local="methodResolver"/>
+		</property>
+		<property name="memberService" ref="memberService"></property>
 	</bean>
 	
-	<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver" id="userMethodNameResolver">
+	<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver" id="methodResolver">
 		<property name="mappings">
 			<props>
-				<prop key="/test/login.do">login</prop>
-				<prop key="/test/memberInfo.do">memberInfo</prop>
+				<prop key="/member/listMembers.do">listMembers</prop>
+				<prop key="/member/addMembers.do">addMembers</prop>
+				<prop key="/member/memberForm.do">memberForm</prop>
+				<prop key="/member/memberDetail.do">memberDetail</prop>
 			</props>
 		</property>
 	</bean>
