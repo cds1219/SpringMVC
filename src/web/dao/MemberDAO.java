@@ -2,12 +2,15 @@ package web.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;	//SpringJDBC core API
 import org.springframework.jdbc.core.RowMapper;
+
+import web.vo.MemberVO;
 
 public class MemberDAO {
 	
@@ -17,24 +20,25 @@ public class MemberDAO {
 		jdbcTemplate=new JdbcTemplate(dataSource);
 	}
 
-	public List listMembers() {	// selectAllMembers()와 동일
+	public List<MemberVO> listMembers() {	// selectAllMembers()와 동일
 		String sql="select * from member";
-		jdbcTemplate.query(sql, null);	//con대여+PreparedStatement+executeQuery
+		
+		List<MemberVO> list=new ArrayList();
+		list=jdbcTemplate.query(sql, new RowMapper(){	//anonymous local class
+
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				MemberVO vo=new MemberVO();
+				vo.setId(rs.getString("id"));
+				vo.setPw(rs.getString("pw"));
+				vo.setName(rs.getString("name"));
+				System.out.println(vo);
+				return vo;
+			}
+			
+		});	//con대여+PreparedStatement+executeQuery
 		
 		return list;
 	}
 	
-	class MyRowMapper implements RowMapper{
-
-		@Override
-		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-			MemberVO vo=new MemberVO();
-			vo.setId(rs.getString("id"));
-			vo.setPw(rs.getString("pw"));
-			vo.setName(rs.getString("name"));
-			return vo;
-		}
-		
-	}
-
 }

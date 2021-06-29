@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import web.service.MemberService;
+import web.vo.MemberVO;
 
 public class MemberController extends MultiActionController{
 	
@@ -21,7 +22,14 @@ public class MemberController extends MultiActionController{
 	
 	public ModelAndView listMembers(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
-		List memberList=memberService.listMembers();
+		List<MemberVO> membersList=memberService.listMembers();
+		
+		ModelAndView mav=new ModelAndView("listMembers");
+		// /WEB-INF/views/listMembers.jsp
+		System.out.println(membersList.size());
+		mav.addObject("membersList",membersList);
+		
+		return mav;
 		
 	}
 }
